@@ -1,0 +1,16 @@
+select
+    {{ dbt_utils.generate_surrogate_key(['ACCOUNT_ID']) }} as account_sk,
+    ACCOUNT_ID as account_id,
+    CUSTOMER_ID as customer_id,
+    ACCOUNT_TYPE as account_type,
+    ACCOUNT_STATUS as account_status,
+    ACCOUNT_NUMBER as account_number,
+    ROUTING_NUMBER as routing_number,
+    upper(CURRENCY_CODE) as currency_code,
+    cast(OPENING_DATE as date) as opening_date,
+    cast(nullif(CLOSING_DATE, '') as date) as closing_date,
+    cast(CURRENT_BALANCE as number(18, 2)) as current_balance,
+    cast(nullif(CREDIT_LIMIT, '') as number(18, 2)) as credit_limit,
+    cast(LAST_ACTIVITY_DATE as date) as last_activity_date,
+    _LOADED_AT as loaded_at,
+from {{ source('transaction_sources', 'accounts') }}
