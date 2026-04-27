@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_reference__country_codes
+    description: Reference lookup for country codes
+    columns:
+      - name: country_code
+        description: Primary key - ISO country code
+        tests:
+          - unique
+          - not_null

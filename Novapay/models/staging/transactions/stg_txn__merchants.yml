@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_txn__merchants
+    description: Cleaned merchant records from transactional source
+    columns:
+      - name: merchant_sk
+        description: Surrogate key for the merchant record
+        tests:
+          - unique
+          - not_null
+
+      - name: merchant_id
+        description: Natural key from transactional source
+        tests:
+          - not_null

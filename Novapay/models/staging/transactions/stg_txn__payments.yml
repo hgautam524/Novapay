@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: stg_txn__payments
+    description: Cleaned payment transactions from transactional source
+    columns:
+      - name: payment_sk
+        description: Surrogate key for the payment record
+        tests:
+          - unique
+          - not_null
+
+      - name: payment_id
+        description: Natural key from transactional source
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: Foreign key to stg_crm__customers
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_crm__customers')
+              field: customer_id
+
+      - name: account_id
+        description: Foreign key to stg_txn__accounts
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_txn__accounts')
+              field: account_id
+
+      - name: merchant_id
+        description: Foreign key to stg_txn__merchants
+        tests:
+          - relationships:
+              to: ref('stg_txn__merchants')
+              field: merchant_id
+
+      - name: payment_status
+        description: Status of the payment transaction
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - pending
+                - completed
+                - failed
+                - reversed

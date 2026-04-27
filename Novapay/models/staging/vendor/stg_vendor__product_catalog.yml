@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_vendor__product_catalog
+    description: Cleaned product catalog from vendor source
+    columns:
+      - name: product_sk
+        description: Surrogate key for the product record
+        tests:
+          - unique
+          - not_null
+
+      - name: product_id
+        description: Natural key from vendor source
+        tests:
+          - not_null
