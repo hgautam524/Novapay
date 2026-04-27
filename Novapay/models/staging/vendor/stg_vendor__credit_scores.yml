@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: stg_vendor__credit_scores
+    description: Cleaned credit score records from vendor source
+    columns:
+      - name: credit_score_sk
+        description: Surrogate key for the credit score record
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_id
+        description: Foreign key to stg_crm__customers
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_crm__customers')
+              field: customer_id
