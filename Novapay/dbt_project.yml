@@ -45,8 +45,10 @@ models:
         +schema: REFERENCE
 
     intermediate:
+      +database: NOVAPAY_DWH
       +schema: intermediate
       +materialized: view
+
       
     marts:
       +database: NOVAPAY_DWH
