@@ -1,6 +1,7 @@
 select
     {{ dbt_utils.generate_surrogate_key(["RAW_DATA:customer_id::VARCHAR"]) }} as customer_sk,
     RAW_DATA:customer_id::VARCHAR as customer_id,
+    RAW_DATA:customer_tier::VARCHAR as customer_tier,
     RAW_DATA:first_name::VARCHAR as first_name,
     RAW_DATA:last_name::VARCHAR as last_name,
     RAW_DATA:email::VARCHAR as email,
