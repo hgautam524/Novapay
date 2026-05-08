@@ -37,12 +37,21 @@ models:
       # Mapping sub-folders to Snowflake Schemas
       crm:
         +schema: CRM
+        +materialized: table
       transactions:
         +schema: TRANSACTIONS
+        +materialized: table
       vendor:
         +schema: VENDOR
+        +materialized: table
       reference:
         +schema: REFERENCE
+        +materialized: table
+      dv:
+        database: NOVAPAY_DWH
+        schema: data_vault
+        materialized: view
+
 
     intermediate:
       +database: NOVAPAY_DWH
@@ -54,3 +63,14 @@ models:
       +database: NOVAPAY_DWH
       +schema: dimensional
       +materialized: table
+
+
+    data_vault:
+      +database: NOVAPAY_DWH
+      +schema: data_vault
+      hub:
+        +materialized: table
+      link:
+        +materialized: table
+      satellite:
+        +materialized: table
