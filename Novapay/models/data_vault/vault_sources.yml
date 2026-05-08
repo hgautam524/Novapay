@@ -1,0 +1,93 @@
+version: 2
+
+models:
+  - name: hub_customer
+    description: "Hub table for Customer entity - stores unique business keys"
+    columns:
+      - name: CUSTOMER_HK
+        description: "Hash key derived from CUSTOMER_ID"
+        tests:
+          - unique
+          - not_null
+      - name: CUSTOMER_ID
+        description: "Business key for customer"
+        tests:
+          - not_null
+      - name: LOAD_DATETIME
+        tests:
+          - not_null
+      - name: RECORD_SOURCE
+        tests:
+          - not_null
+
+  - name: hub_account
+    description: "Hub table for Account entity - stores unique business keys"
+    columns:
+      - name: ACCOUNT_HK
+        description: "Hash key derived from ACCOUNT_ID"
+        tests:
+          - unique
+          - not_null
+      - name: ACCOUNT_ID
+        description: "Business key for account"
+        tests:
+          - not_null
+      - name: LOAD_DATETIME
+        tests:
+          - not_null
+      - name: RECORD_SOURCE
+        tests:
+          - not_null
+
+  - name: link_customer_accounts
+    description: "Link table tracking relationship between customers and accounts"
+    columns:
+      - name: CUSTOMER_ACCOUNT_HK
+        description: "Hash key for the link (composite of CUSTOMER_ID + ACCOUNT_ID)"
+        tests:
+          - unique
+          - not_null
+      - name: CUSTOMER_HK
+        description: "Foreign hash key to hub_customer"
+        tests:
+          - not_null
+      - name: ACCOUNT_HK
+        description: "Foreign hash key to hub_account"
+        tests:
+          - not_null
+      - name: LOAD_DATETIME
+        tests:
+          - not_null
+      - name: RECORD_SOURCE
+        tests:
+          - not_null
+
+  - name: sat_customer_details
+    description: "Satellite holding descriptive attributes for customers"
+    columns:
+      - name: CUSTOMER_HK
+        description: "Hash key linking to hub_customer"
+        tests:
+          - not_null
+      - name: HASHDIFF
+        description: "Hash diff for change detection"
+        tests:
+          - not_null
+      - name: LOAD_DATETIME
+        tests:
+          - not_null
+
+  - name: sat_account_details
+    description: "Satellite holding descriptive attributes for accounts"
+    columns:
+      - name: ACCOUNT_HK
+        description: "Hash key linking to hub_account"
+        tests:
+          - not_null
+      - name: HASHDIFF
+        description: "Hash diff for change detection"
+        tests:
+          - not_null
+      - name: LOAD_DATETIME
+        tests:
+          - not_null
