@@ -12,6 +12,16 @@ with enriched_payments as (
     
     where _loaded_at >= (select dateadd(day, -3, max(dbt_updated_at)) from {{ this }})
     {% endif %}
+),
+
+deduped_payments as (
+    select *
+    from (
+        select *,
+            row_number() over (partition by payment_sk order by _loaded_at desc) as rn
+        from enriched_payments
+    )
+    where rn = 1
 )
 
 select
@@ -27,4 +37,4 @@ select
     is_refund,
     
     _loaded_at as dbt_updated_at
-from enriched_payments
+from deduped_payments
