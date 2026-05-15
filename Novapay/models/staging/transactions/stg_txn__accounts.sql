@@ -1,3 +1,13 @@
+with ranked_accounts as (
+    select
+        *,
+        row_number() over (
+            partition by ACCOUNT_ID
+            order by _LOADED_AT desc
+        ) as rn
+    from {{ source('transaction_sources', 'accounts') }}
+)
+
 select
     {{ dbt_utils.generate_surrogate_key(['ACCOUNT_ID']) }} as account_sk,
     ACCOUNT_ID as account_id,
@@ -12,5 +22,6 @@ select
     cast(CURRENT_BALANCE as number(18, 2)) as current_balance,
     cast(nullif(CREDIT_LIMIT, '') as number(18, 2)) as credit_limit,
     cast(LAST_ACTIVITY_DATE as date) as last_activity_date,
-    _LOADED_AT as loaded_at,
-from {{ source('transaction_sources', 'accounts') }}
+    _LOADED_AT as loaded_at
+from ranked_accounts
+where rn = 1
